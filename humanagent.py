@@ -45,6 +45,10 @@ class PacmanAgent(Agent):
         legal = state.getLegalActions(0)
         move = self._get_move(legal)
 
+        print ("Pos:", state.getPacmanPosition() )
+
+
+
         if move == Directions.STOP:
             # Try to move in the same direction as before
             if self.lastMove in legal:
@@ -70,6 +74,8 @@ class PacmanAgent(Agent):
         if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys) and
                 Directions.SOUTH in legal):
             move = Directions.SOUTH
+        
+
         return move
 
     def _on_press(self, key, mod):

@@ -1,20 +1,6 @@
-"""
-Author : one of the TAs, just after
-submitting an important journal manuscript.
-
-I am so tired that I might have screwed up the following DFS implementation.
-
-My fellow TAs are expected to fix all the errors
-while I'm taking a very long nap.
-
-I trust them but you should also, student,
-check the following code against a possible *unique* error.
-
-"""
-
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
-
+from pacman_module.util import *
 
 def key(state):
     """
@@ -30,6 +16,26 @@ def key(state):
     - A hashable key object that uniquely identifies a Pacman game state.
     """
     return (state.getPacmanPosition(), state.getFood()) #we changed this 
+
+
+
+def sumManhattanDistance(state):
+    foodMatrix = state.getFood()
+    pacmanPosition = state.getPacmanPosition()
+    sum = 0
+    for i in range(foodMatrix.width):
+        for j in range(foodMatrix.height):
+            if (foodMatrix[i][j] == True):
+                sum += manhattanDistance(pacmanPosition, (i,j))
+
+    return sum
+
+def movementCost(path):
+    return len(path)
+
+
+def estimatedCost(item):
+    return sumManhattanDistance(item[0])+ movementCost(item[1])
 
 
 class PacmanAgent(Agent):
@@ -60,7 +66,7 @@ class PacmanAgent(Agent):
         """
 
         if not self.moves:
-            self.moves = self.dfs(state)
+            self.moves = self.astar(state)
 
         try:
             return self.moves.pop(0)
@@ -68,7 +74,7 @@ class PacmanAgent(Agent):
         except IndexError:
             return Directions.STOP
 
-    def dfs(self, state):
+    def astar(self, state):
         """
         Given a pacman game state,
         returns a list of legal moves to solve the search layout.
@@ -83,15 +89,16 @@ class PacmanAgent(Agent):
         - A list of legal moves as defined in `game.Directions`.
         """
         path = []
-        fringe = [(state, path)]
+        fringe = PriorityQueueWithFunction(estimatedCost)
+        fringe.push((state, path)) 
         closed = set()
 
         while True:
-            if len(fringe) == 0:
+            if fringe.isEmpty() == True:
                 print("Failure")
                 return []  # failure
 
-            current, path = fringe.pop()
+            current, path = fringe.pop()[1]
 
             if current.isWin():
                 return path
@@ -102,6 +109,6 @@ class PacmanAgent(Agent):
                 closed.add(current_key)
 
                 for next_state, action in current.generatePacmanSuccessors():
-                    fringe.append((next_state, path + [action]))
+                    fringe.push((next_state, path + [action]))
 
         return path
