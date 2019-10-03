@@ -19,23 +19,28 @@ def key(state):
 
 
 
-def sumManhattanDistance(state):
-    foodMatrix = state.getFood()
-    pacmanPosition = state.getPacmanPosition()
+def heruistic(sum, foodCount):
+    return sum/foodCount
+
+
+def getCost(path, nbFoodLeft):
+    return  (nbFoodLeft)+ 1 + len(path)
+
+def estimatedCost(item):
+    foodMatrix = item[0].getFood()
+    pacmanPosition = item[0].getPacmanPosition()
+    foodCount = 1
     sum = 0
+
     for i in range(foodMatrix.width):
         for j in range(foodMatrix.height):
             if (foodMatrix[i][j] == True):
                 sum += manhattanDistance(pacmanPosition, (i,j))
+                foodCount += 1
 
-    return sum
-
-def movementCost(path):
-    return len(path)
+    return  getCost(item[1],foodCount) + heruistic(sum,foodCount)
 
 
-def estimatedCost(item):
-    return sumManhattanDistance(item[0])+ movementCost(item[1])
 
 
 class PacmanAgent(Agent):
@@ -73,6 +78,8 @@ class PacmanAgent(Agent):
 
         except IndexError:
             return Directions.STOP
+
+
 
     def astar(self, state):
         """
