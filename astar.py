@@ -20,16 +20,18 @@ def key(state):
 
 
 def heruistic(sum, foodCount):
-    return sum/foodCount
+    if foodCount == 0 :
+        return 0
+    return sum / foodCount
 
 
 def getCost(path, nbFoodLeft):
-    return  (nbFoodLeft)+ 1 + len(path)
+    return  1 + nbFoodLeft + len(path)
 
 def estimatedCost(item):
     foodMatrix = item[0].getFood()
     pacmanPosition = item[0].getPacmanPosition()
-    foodCount = 1
+    foodCount = 0
     sum = 0
 
     for i in range(foodMatrix.width):
