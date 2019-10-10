@@ -15,7 +15,7 @@ def key(state):
     -------
     - A hashable key object that uniquely identifies a Pacman game state.
     """
-    return (state.getPacmanPosition(), state.getFood()) #we changed this 
+    return (state.getPacmanPosition(), state.getFood())
 
 
 class PacmanAgent(Agent):
@@ -68,10 +68,10 @@ class PacmanAgent(Agent):
         -------
         - A list of legal moves as defined in `game.Directions`.
         """
-        path = []
-        fringe = Queue()
-        fringe.push((state, path)) 
+        path = [] 
         closed = set()
+        fringe = Queue()
+        fringe.push((state, path))
 
         while True:
             if fringe.isEmpty() == True:
