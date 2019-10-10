@@ -52,7 +52,7 @@ def backwardCost(path, nbFood):
     -------
     - A non-nul integer that represents the backward cost of the given Pacman game state.
     """
-    return  1 + nbFoodLeft + len(path)
+    return  1 + nbFood + len(path)
 
 def optimalCost(item):
     """
