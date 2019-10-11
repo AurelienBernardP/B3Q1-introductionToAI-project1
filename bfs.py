@@ -2,6 +2,7 @@ from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 from pacman_module.util import *
 
+
 def key(state):
     """
     Returns a key that uniquely identifies a Pacman game state.
@@ -68,13 +69,13 @@ class PacmanAgent(Agent):
         -------
         - A list of legal moves as defined in `game.Directions`.
         """
-        path = [] 
+        path = []
         closed = set()
         fringe = Queue()
         fringe.push((state, path))
 
         while True:
-            if fringe.isEmpty() == True:
+            if fringe.isEmpty() is True:
                 print("Failure")
                 return []  # failure
 
