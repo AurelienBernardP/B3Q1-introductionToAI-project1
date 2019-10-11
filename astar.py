@@ -2,6 +2,7 @@ from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 from pacman_module.util import *
 
+
 def key(state):
     """
     Returns a key that uniquely identifies a Pacman game state.
@@ -18,7 +19,6 @@ def key(state):
     return (state.getPacmanPosition(), state.getFood())
 
 
-
 def heuristic(sumManhattanDist, nbFood):
     """
     Returns the forward cost given parameters of a Pacman game state
@@ -33,7 +33,7 @@ def heuristic(sumManhattanDist, nbFood):
     -------
     - A real that represents the forward cost of the given Pacman game state.
     """
-    if nbFood == 0 :
+    if nbFood == 0:
         return 0
 
     return sumManhattanDist / nbFood
@@ -50,22 +50,24 @@ def backwardCost(path, nbFood):
 
     Return:
     -------
-    - A non-nul integer that represents the backward cost of the given Pacman game state.
+    - An integer that represents the backward cost of the given game state
     """
     return nbFood + len(path) * 1.000001
 
+
 def optimalCost(item):
     """
-    Returns the estimated cost of the cheapest solution given a Pacman game 
+    Returns the estimated cost of the cheapest solution given a Pacman game
     state and the taken path to reach that state.
 
     Arguments:
     ----------
-    - `item`: A tuple of a Pacman game state and the taken path to reach that state
+    - `item`: A tuple of a Pacman game state and the taken path to
+              reach that state
 
     Return:
     -------
-    - A non-zero real number that represents the optimal cost to reach the goal state.
+    - A real number that represents the optimal cost to reach the goal state.
     """
 
     state = item[0]
@@ -76,16 +78,14 @@ def optimalCost(item):
     nbFood = 0
     sumManhattanDist = 0
 
-    #Going through the matrix to count the remaining food in the game
+    """Going through the matrix to count the remaining food in the game"""
     for i in range(foodMatrix.width):
         for j in range(foodMatrix.height):
-            if (foodMatrix[i][j] == True):
-                sumManhattanDist += manhattanDistance(pacmanPosition, (i,j))
+            if foodMatrix[i][j] is True:
+                sumManhattanDist += manhattanDistance(pacmanPosition, (i, j))
                 nbFood += 1
 
-    return  backwardCost(path,nbFood) + heuristic(sumManhattanDist,nbFood)
-
-
+    return backwardCost(path, nbFood) + heuristic(sumManhattanDist, nbFood)
 
 
 class PacmanAgent(Agent):
@@ -124,8 +124,6 @@ class PacmanAgent(Agent):
         except IndexError:
             return Directions.STOP
 
-
-
     def astar(self, state):
         """
         Given a pacman game state,
@@ -140,15 +138,15 @@ class PacmanAgent(Agent):
         -------
         - A list of legal moves as defined in `game.Directions`.
         """
-        path = [] 
+        path = []
         closed = set()
         fringe = PriorityQueueWithFunction(optimalCost)
         fringe.push((state, path))
 
         while True:
-            if fringe.isEmpty() == True:
+            if fringe.isEmpty() is True:
                 print("Failure")
-                return [] 
+                return []
 
             current, path = fringe.pop()[1]
 
