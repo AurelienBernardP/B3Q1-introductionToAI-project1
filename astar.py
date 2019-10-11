@@ -83,7 +83,7 @@ def optimalCost(item):
                 sumManhattanDist += manhattanDistance(pacmanPosition, (i,j))
                 nbFood += 1
 
-    return  backwardCost(path,nbFood) #+ heuristic(sumManhattanDist,nbFood)
+    return  backwardCost(path,nbFood) + heuristic(sumManhattanDist,nbFood)
 
 
 
